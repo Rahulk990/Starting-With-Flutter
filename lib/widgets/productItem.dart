@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart.dart';
 
 import 'package:shop_app/providers/product.dart';
 
@@ -14,10 +15,7 @@ class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<Product>(context);
-
-    void addToCart() {
-      print(productProvider.title + " added to Cart");
-    }
+    final cartProvider = Provider.of<Cart>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
@@ -55,7 +53,7 @@ class _ProductItemState extends State<ProductItem> {
             icon: const Icon(
               Icons.shopping_cart,
             ),
-            onPressed: addToCart,
+            onPressed: () => cartProvider.addItem(productProvider),
           ),
         ),
       ),

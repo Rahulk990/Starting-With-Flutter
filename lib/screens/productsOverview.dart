@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart.dart';
 
 import 'package:shop_app/providers/products.dart';
+import 'package:shop_app/screens/cartOverview.dart';
 import 'package:shop_app/widgets/productItem.dart';
+import 'package:shop_app/widgets/badge.dart';
 
 enum FilterOptions { Favorites, All }
 
@@ -26,6 +29,20 @@ class _ProductsOverviewState extends State<ProductsOverview> {
           "Shopping App",
         ),
         actions: [
+          Consumer<Cart>(
+            builder: (_, cartProvider, ch) => Badge(
+              child: ch!,
+              color: Colors.yellow,
+              value: cartProvider.length.toString(),
+            ),
+            child: IconButton(
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(CartOverview.routeName),
+              icon: const Icon(
+                Icons.shopping_cart,
+              ),
+            ),
+          ),
           PopupMenuButton(
             onSelected: (FilterOptions option) {
               setState(() {
@@ -35,6 +52,9 @@ class _ProductsOverviewState extends State<ProductsOverview> {
                   _showFavorites = false;
               });
             },
+            icon: Icon(
+              Icons.filter_alt,
+            ),
             itemBuilder: (ctx) => [
               PopupMenuItem(
                 child: Text('Favorites Only'),
@@ -45,7 +65,7 @@ class _ProductsOverviewState extends State<ProductsOverview> {
                 value: FilterOptions.All,
               ),
             ],
-          )
+          ),
         ],
       ),
       body: GridView.builder(
