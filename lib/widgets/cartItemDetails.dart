@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:shop_app/providers/cart.dart';
 
 class CartItemDetails extends StatelessWidget {
@@ -31,6 +32,25 @@ class CartItemDetails extends StatelessWidget {
       direction: DismissDirection.endToStart,
       onDismissed: (_) =>
           Provider.of<Cart>(context, listen: false).removeitem(id),
+      confirmDismiss: (_) {
+        return showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text("Are you sure?"),
+            content: Text("Do you want to remove item from the cart?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: Text('NO'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: Text('YES'),
+              ),
+            ],
+          ),
+        );
+      },
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 4.0),
         child: Padding(
@@ -45,7 +65,7 @@ class CartItemDetails extends StatelessWidget {
               ),
             ),
             title: Text(title),
-            subtitle: Text('Total: \$${(price * quantity)}'),
+            subtitle: Text('Total: \$${(price * quantity).toStringAsFixed(2)}'),
             trailing: Text('$quantity x'),
           ),
         ),

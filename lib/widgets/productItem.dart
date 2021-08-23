@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/providers/cart.dart';
 
+import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/product.dart';
 
 class ProductItem extends StatefulWidget {
@@ -50,11 +50,19 @@ class _ProductItemState extends State<ProductItem> {
             onPressed: () => productProvider.toggleFavorite(),
           ),
           trailing: IconButton(
-            icon: const Icon(
-              Icons.shopping_cart,
-            ),
-            onPressed: () => cartProvider.addItem(productProvider),
-          ),
+              icon: const Icon(
+                Icons.shopping_cart,
+              ),
+              onPressed: () {
+                cartProvider.addItem(productProvider);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Item added to Cart'),
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }),
         ),
       ),
     );

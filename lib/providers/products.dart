@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:shop_app/providers/product.dart';
 
 class Products with ChangeNotifier {
@@ -51,7 +52,19 @@ class Products with ChangeNotifier {
 
   void addProduct(Product product) {
     _items.add(product);
-
     notifyListeners();
+  }
+
+  void removeProduct(String id) {
+    _items.removeWhere((item) => item.id == id);
+    notifyListeners();
+  }
+
+  void updateProduct(Product product) {
+    final index = _items.indexWhere((item) => item.id == product.id);
+    if (index >= 0) {
+      _items[index] = product;
+      notifyListeners();
+    }
   }
 }

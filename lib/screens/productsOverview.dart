@@ -4,6 +4,7 @@ import 'package:shop_app/providers/cart.dart';
 
 import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/screens/cartOverview.dart';
+import 'package:shop_app/widgets/appDrawer.dart';
 import 'package:shop_app/widgets/productItem.dart';
 import 'package:shop_app/widgets/badge.dart';
 
@@ -68,6 +69,7 @@ class _ProductsOverviewState extends State<ProductsOverview> {
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: GridView.builder(
         padding: const EdgeInsets.all(10),
         itemCount: productsData.length,

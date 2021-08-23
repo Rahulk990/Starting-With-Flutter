@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:shop_app/providers/cart.dart';
+import 'package:shop_app/widgets/appDrawer.dart';
 import 'package:shop_app/widgets/cartItemDetails.dart';
 
 class CartOverview extends StatelessWidget {
@@ -18,6 +19,7 @@ class CartOverview extends StatelessWidget {
           'Your Cart',
         ),
       ),
+      drawer: AppDrawer(),
       body: Column(
         children: [
           Card(
@@ -56,10 +58,15 @@ class CartOverview extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: const Text('Order Placed'),
-                        ));
-                        cartProvider.clear();
+                        if (cartProvider.total != 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text('Order Placed'),
+                              duration: Duration(seconds: 1),
+                            ),
+                          );
+                          cartProvider.clear();
+                        }
                       },
                       child: Text('Order Now'),
                     ),

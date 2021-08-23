@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+
 import 'package:shop_app/providers/product.dart';
 
 class CartItem {
