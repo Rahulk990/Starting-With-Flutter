@@ -33,7 +33,17 @@ class UserProductItem extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   Provider.of<Products>(context, listen: false)
-                      .removeProduct(productData.id);
+                      .removeProduct(productData.id)
+                      .catchError((_) {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                            Text('Something went wrong! Try again later!!'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  });
                 },
                 icon: Icon(Icons.delete),
                 color: Theme.of(context).errorColor,

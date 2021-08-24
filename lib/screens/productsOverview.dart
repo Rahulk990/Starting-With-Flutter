@@ -17,6 +17,21 @@ class ProductsOverview extends StatefulWidget {
 
 class _ProductsOverviewState extends State<ProductsOverview> {
   bool _showFavorites = false;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _refreshData();
+    super.initState();
+  }
+
+  Future<void> _refreshData() async {
+    setState(() => _isLoading = true);
+
+    Provider.of<Products>(context, listen: false)
+        .fetchAndSetProducts()
+        .then((_) => setState(() => _isLoading = false));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,20 +85,27 @@ class _ProductsOverviewState extends State<ProductsOverview> {
         ],
       ),
       drawer: AppDrawer(),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: productsData.length,
-        itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-          value: productsData[index],
-          child: ProductItem(),
-        ),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : RefreshIndicator(
+              onRefresh: _refreshData,
+              child: GridView.builder(
+                padding: const EdgeInsets.all(10),
+                itemCount: productsData.length,
+                itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+                  value: productsData[index],
+                  child: ProductItem(),
+                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 3 / 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+              ),
+            ),
     );
   }
 }
