@@ -97,7 +97,7 @@ class Products with ChangeNotifier {
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct as Product);
       notifyListeners();
-      throw Exception();
+      throw "Error Occured";
     }
 
     existingProduct = null;

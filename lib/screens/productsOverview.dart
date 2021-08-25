@@ -11,6 +11,8 @@ import 'package:shop_app/widgets/badge.dart';
 enum FilterOptions { Favorites, All }
 
 class ProductsOverview extends StatefulWidget {
+  static const String routeName = '/home';
+
   @override
   _ProductsOverviewState createState() => _ProductsOverviewState();
 }

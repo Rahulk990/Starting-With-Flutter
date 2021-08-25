@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart.dart';
 
 import 'package:shop_app/providers/products.dart';
+import 'package:shop_app/screens/authOverview.dart';
 import 'package:shop_app/screens/cartOverview.dart';
 import 'package:shop_app/screens/editProductOverview.dart';
 import 'package:shop_app/screens/productsOverview.dart';
@@ -18,24 +20,29 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (ctx) => Auth(),
+        ),
+        ChangeNotifierProvider(
           create: (ctx) => Products(),
         ),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Shopping App',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-          fontFamily: 'Lato',
+      child: Consumer<Auth>(
+        builder: (ctx, authData, _) => MaterialApp(
+          title: 'Shopping App',
+          theme: ThemeData(
+            primarySwatch: Colors.red,
+            fontFamily: 'Lato',
+          ),
+          home: authData.isAuthenticated ? ProductsOverview() : AuthOverview(),
+          routes: {
+            CartOverview.routeName: (ctx) => CartOverview(),
+            UserProductsOverview.routeName: (ctx) => UserProductsOverview(),
+            EditProductOverview.routeName: (ctx) => EditProductOverview(),
+          },
         ),
-        home: ProductsOverview(),
-        routes: {
-          CartOverview.routeName: (ctx) => CartOverview(),
-          UserProductsOverview.routeName: (ctx) => UserProductsOverview(),
-          EditProductOverview.routeName: (ctx) => EditProductOverview(),
-        },
       ),
     );
   }
