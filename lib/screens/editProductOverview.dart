@@ -19,12 +19,7 @@ class _EditProductOverviewState extends State<EditProductOverview> {
   final _form = GlobalKey<FormState>();
 
   var _editedProduct = Product(
-    id: '',
-    title: '',
-    description: '',
-    price: 0,
-    imageUrl: '',
-  );
+      id: '', title: '', description: '', price: 0, imageUrl: '', userId: '');
 
   var _initValues = {
     'title': '',
@@ -170,6 +165,7 @@ class _EditProductOverviewState extends State<EditProductOverview> {
                           price: _editedProduct.price,
                           imageUrl: _editedProduct.imageUrl,
                           isFavorite: _editedProduct.isFavorite,
+                          userId: _editedProduct.userId,
                         )
                       },
                     ),
@@ -201,6 +197,7 @@ class _EditProductOverviewState extends State<EditProductOverview> {
                           price: double.parse(value!),
                           imageUrl: _editedProduct.imageUrl,
                           isFavorite: _editedProduct.isFavorite,
+                          userId: _editedProduct.userId,
                         )
                       },
                     ),
@@ -227,6 +224,7 @@ class _EditProductOverviewState extends State<EditProductOverview> {
                           price: _editedProduct.price,
                           imageUrl: _editedProduct.imageUrl,
                           isFavorite: _editedProduct.isFavorite,
+                          userId: _editedProduct.userId,
                         )
                       },
                     ),
@@ -291,6 +289,7 @@ class _EditProductOverviewState extends State<EditProductOverview> {
                                 price: _editedProduct.price,
                                 imageUrl: value!,
                                 isFavorite: _editedProduct.isFavorite,
+                                userId: _editedProduct.userId,
                               )
                             },
                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 
 import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/screens/editProductOverview.dart';
@@ -11,7 +12,11 @@ class UserProductsOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context).items;
+    final userId = Provider.of<Auth>(context).userId;
+    final productsData = Provider.of<Products>(context)
+        .items
+        .where((item) => item.userId == userId)
+        .toList();
 
     return Scaffold(
       appBar: AppBar(

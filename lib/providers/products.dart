@@ -6,6 +6,10 @@ import 'package:shop_app/providers/product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
+  final String? authToken;
+  final String? userId;
+
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -21,7 +25,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
-        'https://starting-with-flutter-f2649-default-rtdb.firebaseio.com/products.json');
+        'https://starting-with-flutter-f2649-default-rtdb.firebaseio.com/products.json?auth=$authToken');
 
     try {
       final response = await http.get(url);
@@ -38,6 +42,7 @@ class Products with ChangeNotifier {
           price: prodData['price'],
           isFavorite: prodData['isFavorite'],
           imageUrl: prodData['imageUrl'],
+          userId: prodData['userId'],
         ));
       });
 
@@ -57,6 +62,7 @@ class Products with ChangeNotifier {
         url,
         body: json.encode({
           'title': product.title,
+          'userId': userId,
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
@@ -70,6 +76,7 @@ class Products with ChangeNotifier {
         price: product.price,
         imageUrl: product.imageUrl,
         id: json.decode(response.body)['name'],
+        userId: userId,
       );
 
       _items.add(newProduct);
@@ -84,7 +91,7 @@ class Products with ChangeNotifier {
     notifyListeners();
 
     final url = Uri.parse(
-        'https://starting-with-flutter-f2649-default-rtdb.firebaseio.com/products/${id}.json');
+        'https://starting-with-flutter-f2649-default-rtdb.firebaseio.com/products/${id}.json?auth=$authToken');
 
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     dynamic existingProduct = _items[existingProductIndex];
@@ -107,12 +114,13 @@ class Products with ChangeNotifier {
     final index = _items.indexWhere((item) => item.id == product.id);
     if (index >= 0) {
       final url = Uri.parse(
-          'https://starting-with-flutter-f2649-default-rtdb.firebaseio.com/products/${product.id}.json');
+          'https://starting-with-flutter-f2649-default-rtdb.firebaseio.com/products/${product.id}.json?auth=$authToken');
 
       try {
         await http.patch(url,
             body: json.encode({
               'title': product.title,
+              'userId': userId,
               'description': product.description,
               'imageUrl': product.imageUrl,
               'price': product.price,
